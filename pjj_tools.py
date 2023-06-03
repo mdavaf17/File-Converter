@@ -74,7 +74,7 @@ wo2pd.grid(row=1, column=1, padx = 20 , pady = 50)
 
 # PPT TO PDF
 pp2pd =Button(converterpage, text="PPT TO PDF", width="15", font=lucida, \
-              bg="#ff6e40", fg="white")
+              bg="#ff6e40", fg="white", command=lambda: raise_frame(ppt2pdfpage))
 pp2pd.grid(row=1, column=2, padx = 20)
 
 # IMAGE TO PDF
@@ -132,6 +132,43 @@ btn_browse.grid(row=1, column=3)
 
 # BACK FILE CONVERTER
 btn_back2 = Button(wo2pdfpage, text="Back", width="5", font="Arial,(12)", \
+           command=lambda: raise_frame(converterpage), bg="#1e3d59", fg="white")
+btn_back2.grid(row=3, column=2, pady=30)
+
+# PPT2PDF
+def openPpt():
+    fileppt = askopenfile(filetypes=[("Presentation Files", "*.pptx")])
+    getfname = fileppt.name
+    newpptname = getfname.replace("/", "\\")
+    out_file = os.path.splitext(newpptname)[0]
+    powerpoint = win32com.client.Dispatch("Powerpoint.Application")
+    pdf = powerpoint.Presentations.Open(newpptname, WithWindow=False)
+    pdf.SaveAs(out_file, 32)
+    pdf.Close()
+    powerpoint.Quit()
+    showinfo("Complete !", "PPT to PDF Succesfully Converted")
+
+# LOGO
+logo4 = PhotoImage(file="logos.png")
+labellogo4 = Label(ppt2pdfpage, image = logo3)
+labellogo4.grid(row=0, column=2)
+
+# LABEL CHOOSE FILE
+choose_file = Label(ppt2pdfpage, text="File", width="15", font=lucida, bg="#1e3d59", \
+                    fg="white")
+choose_file.grid(row=1, column=1, padx = (50,0) , pady = 50)
+
+# TITIK CHOOSE FILE
+titik_choose_file = Label(ppt2pdfpage, text=":", width="15", font=lucida, bg="#1e3d59", fg="white")
+titik_choose_file.grid(row=1, column=2)
+
+# BROWSE FILE
+btn_browse = Button(ppt2pdfpage, text="Browse File...", width="15", font=lucida, \
+                    bg="#ffc13b", fg="black", relief=RAISED, command=openPpt)
+btn_browse.grid(row=1, column=3)
+
+# BACK FILE CONVERTER
+btn_back2 = Button(ppt2pdfpage, text="Back", width="5", font="Arial,(12)", \
            command=lambda: raise_frame(converterpage), bg="#1e3d59", fg="white")
 btn_back2.grid(row=3, column=2, pady=30)
 
