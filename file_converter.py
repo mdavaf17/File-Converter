@@ -9,6 +9,7 @@ from tkinter.filedialog import askopenfile
 import win32com.client
 from PIL import Image, ImageTk
 import img2pdf
+from pdf2docx import Converter
 
 def raise_frame(frame):
     frame.tkraise()
@@ -86,7 +87,7 @@ img2pd.grid(row=1, column=3, padx = 20)
 
 # PDF TO WORD
 pd2wo =Button(converterpage, text="PDF TO WORD", width="15", font=lucida, \
-              bg="#ff6e40", fg="white")
+              bg="#ff6e40", fg="white", command=lambda: raise_frame(pdf2wordpage))
 pd2wo.grid(row=2, column=1, columnspan=2, padx = 20)
 
 # PDF TO PPT
@@ -216,6 +217,41 @@ btn_back3 = Button(img2pdfpage, text="Back", width="5", font="Arial,(12)", \
            command=lambda: raise_frame(converterpage), bg="#1e3d59", fg="white")
 btn_back3.grid(row=3, column=2, pady=30)
 
+# PDF TO WORD
+def openPdf():
+    file_pdf = askopenfile(filetypes=[("Portable File", "*.pdf")])
+    getfname = file_pdf.name
+    newpdfname = getfname.replace("/", "\\")
+    file_docx = newpdfname.replace(".pdf", ".docx")
+    pdftoword = Converter(newpdfname)
+    pdftoword.convert(file_docx, start=0, end=None)
+    pdftoword.close()
+    showinfo("Complete !", "PDF to WORD Succesfully Converted")
+
+
+# LOGO
+logo6 = PhotoImage(file="logos.png")
+labellogo6 = Label(pdf2wordpage, image = logo3)
+labellogo6.grid(row=0, column=2)
+
+# LABEL CHOOSE FILE
+choose_file = Label(pdf2wordpage, text="File", width="15", font=lucida, bg="#1e3d59", \
+                    fg="white")
+choose_file.grid(row=1, column=1, padx = (50,0) , pady = 50)
+
+# TITIK CHOOSE FILE
+titik_choose_file = Label(pdf2wordpage, text=":", width="15", font=lucida, bg="#1e3d59", fg="white")
+titik_choose_file.grid(row=1, column=2)
+
+# BROWSE FILE
+btn_browse = Button(pdf2wordpage, text="Browse File...", width="15", font=lucida, \
+                    bg="#ffc13b", fg="black", relief=RAISED, command=openPdf)
+btn_browse.grid(row=1, column=3)
+
+# BACK FILE CONVERTER
+btn_back4 = Button(pdf2wordpage, text="Back", width="5", font="Arial,(12)", \
+           command=lambda: raise_frame(converterpage), bg="#1e3d59", fg="white")
+btn_back4.grid(row=3, column=2, pady=30)
 
 frame=Frame(root,relief=RAISED,borderwidth=1)
 frame.pack(fill=X)
